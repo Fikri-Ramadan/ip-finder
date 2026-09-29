@@ -14,7 +14,7 @@ export default function IPDetailsCard() {
     return (
       <div className="flex absolute -bottom-19 left-1/2 -translate-x-1/2 w-[90%] max-w-[1100px] h-[140px] w-1300:h-[160px] bg-white rounded-xl shadow-lg p-4 w-1300:p-6">
         <div className="flex-1 flex justify-between items-start">
-          <div className="flex-1/4 w-100 h-full bg-gray-200 rounded-xl animate-pulse"></div>
+          <div className="flex-1/4 w-100 h-full bg-gray-950/30 rounded-xl animate-pulse"></div>
         </div>
       </div>
     );
