@@ -14,7 +14,7 @@ export default function Header() {
         />
         <IPDetailsCard />
       </div>
-      <div className="w-full h-full flex flex-col items-center pt-4 w-1300:pt-8 gap-4 w-1300:gap-8">
+      <div className="w-full h-full flex flex-col items-center pt-8 gap-4 w-1300:gap-8">
         <div className="text-3xl font-semibold tracking-wide">IP Address Tracker</div>
         <SearchBar />
       </div>

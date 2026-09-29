@@ -1,18 +1,24 @@
+import { isDomain, isIpAddress } from "@/lib/utils";
 import { NextResponse } from "next/server";
+import { promises as dns } from 'dns';
+
+export const runtime = 'nodejs';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const ip = searchParams.get("ip") || "";
+  const search = searchParams.get("search") || "";
 
-  const apiKey = process.env.ABSTRACT_API_KEY;
+  let apiURL = `https://ipwho.is/`;
+
+  if (isIpAddress(search)) {
+    apiURL = `https://ipwho.is/${search}`;
+  } else if (isDomain(search)) {
+    const { address } = await dns.lookup(search);
+    apiURL = `https://ipwho.is/${address}`;
+  }
 
   try {
-    const res = await fetch(`https://ip-intelligence.abstractapi.com/v1/?ip_address=${ip}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      }
-    });
+    const res = await fetch(apiURL);
     const data = await res.json();
 
     return NextResponse.json(data);

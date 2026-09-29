@@ -21,14 +21,14 @@ export default function IPDetailsCard() {
   }
 
   return (
-    <div className="flex absolute -bottom-19 left-1/2 -translate-x-1/2 w-[90%] max-w-[1100px] h-[140px] w-1300:h-[160px] bg-white rounded-xl shadow-lg p-6">
-      <div className="flex-1 flex justify-between items-start pt-2 px-3">
-        <div className="flex-1/4 space-y-3">
+    <div className="flex absolute -bottom-19 left-1/2 -translate-x-1/2 w-[90%] max-w-[1100px] h-[140px] max-h-[200px] w-1300:h-[160px] bg-white rounded-xl shadow-lg p-6">
+      <div className="flex-1 flex flex-col md:flex-row justify-between items-start pt-2 px-3">
+        <div className="flex-1/4 space-y-2">
           <div className="text-black/40 font-extrabold text-xs tracking-widest">IP ADDRESS</div>
           <div className="text-black font-bold text-[18px] w-1300:text-[21px]">{details?.ip}</div>
         </div>
         <div className="w-[0.5px] h-20 bg-gray-400 mx-10" />
-        <div className="flex-1/4 space-y-3">
+        <div className="flex-1/4 space-y-2">
           <div className="text-black/40 font-extrabold text-xs tracking-widest">LOCATION</div>
           <div className="text-black font-bold text-[18px] w-1300:text-[21px]">
             <p className="text-black font-bold text-[18px] w-1300:text-[21px] leading-tight">
@@ -39,14 +39,14 @@ export default function IPDetailsCard() {
           </div>
         </div>
         <div className="w-[0.5px] h-20 bg-gray-400 mx-10" />
-        <div className="flex-1/4 space-y-3">
+        <div className="flex-1/4 space-y-2">
           <div className="text-black/40 font-extrabold text-xs tracking-widest">TIMEZONE</div>
           <div className="text-black font-bold text-[18px] w-1300:text-[21px]">
-            {formatUtcOffset(details?.timezone ?? 0)}
+            {formatUtcOffset(details?.timezone ?? '')}
           </div>
         </div>
         <div className="w-[0.5px] h-20 bg-gray-400 mx-10" />
-        <div className="flex-1/4 space-y-3 leading-8">
+        <div className="flex-1/4 space-y-2 leading-8">
           <div className="text-black/40 font-extrabold text-xs tracking-widest">ISP</div>
           <div className="text-black font-bold text-[18px] w-1300:text-[21px] leading-tight">{details?.isp}</div>
         </div>

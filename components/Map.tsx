@@ -23,7 +23,7 @@ function MapOffsetController({ markerPosition }: { markerPosition: [number, numb
   useEffect(() => {
     if (markerPosition) {
       map.setView(markerPosition, map.getZoom());
-      map.panBy([0, -70],);
+      map.panBy([0, -50],);
     }
   }, [markerPosition, map]);
 

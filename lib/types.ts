@@ -9,7 +9,7 @@ export interface IpDetails {
   city: string;
   region: string;
   postalCode: string;
-  timezone: number;
+  timezone: string;
   isp: string;
   latitude: number;
   longitude: number;
