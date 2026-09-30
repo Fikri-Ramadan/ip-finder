@@ -17,14 +17,19 @@ const customIcon = typeof window !== "undefined" ? new L.Icon({
   popupAnchor: [0, -50],
 }) : null;
 
+const MOBILE_BREAKPOINT = 768;
+
 function MapOffsetController({ markerPosition }: { markerPosition: [number, number]; }) {
   const map = useMap();
 
   useEffect(() => {
-    if (markerPosition) {
-      map.setView(markerPosition, map.getZoom());
-      map.panBy([0, -50],);
-    }
+    if (!markerPosition) return;
+
+    const isMobile = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`).matches;
+    const offsetY = isMobile ? -130 : -50;
+
+    map.setView(markerPosition, map.getZoom(), { animate: false });
+    map.panBy([0, offsetY], { animate: false });
   }, [markerPosition, map]);
 
   return null;
@@ -42,7 +47,6 @@ export default function Map() {
   return <>
     <MapContainer
       center={position}
-
       zoom={12}
       scrollWheelZoom={true}
       style={{ height: '100%', width: '100%' }}

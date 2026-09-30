@@ -22,11 +22,11 @@ export default function SearchBar() {
         value={search}
         onChange={e => setSearch(e.target.value)}
         placeholder="Search for any IP address or domain"
-        className="w-full bg-white text-black px-6 py-4 rounded-l-2xl text-sm md:text-xl outline-none placeholder:text-gray-400"
+        className="w-full bg-white text-black px-6 py-4 rounded-l-2xl text-lg md:text-xl outline-none placeholder:text-gray-400"
       />
       <button
         type="submit"
-        className="bg-gray-950 hover:bg-gray-950/80 transition-colors px-6 rounded-r-2xl flex items-center justify-center cursor-pointer"
+        className="bg-gray-900 hover:bg-gray-900/90 transition-colors px-6 rounded-r-2xl flex items-center justify-center cursor-pointer"
       >
         <Image
           src={'/images/icon-arrow.svg'}

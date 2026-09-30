@@ -4,8 +4,8 @@ import IPDetailsCard from "./IPDetailsCard";
 
 export default function Header() {
   return (
-    <div className="relative z-1 h-60 w-1300:h-70">
-      <div className="absolute top-0 left-0 w-full h-60 w-1300:h-70 -z-10">
+    <div className="relative z-1 h-70 md:h-60 w-1300:h-70">
+      <div className="absolute top-0 left-0 w-full h-70 md:h-60 w-1300:h-70 -z-10">
         <Image
           src={'/images/pattern-bg-desktop.png'}
           alt="bg image"
@@ -14,7 +14,7 @@ export default function Header() {
         />
         <IPDetailsCard />
       </div>
-      <div className="w-full h-full flex flex-col items-center pt-8 gap-4 w-1300:gap-8">
+      <div className="w-full h-full flex flex-col items-center pt-7 gap-6 md:gap-4 w-1300:gap-8">
         <div className="text-3xl font-semibold tracking-wide">IP Address Tracker</div>
         <SearchBar />
       </div>
