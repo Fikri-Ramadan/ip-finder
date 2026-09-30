@@ -9,7 +9,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const search = searchParams.get("search") || "";
   const headersList = await headers();
-  console.log('IP: ',headersList.get("x-real-ip"))
+  console.log('User IP:', headersList.get("x-real-ip"));
   let userIp = headersList.get("x-forwarded-for") || headersList.get("x-real-ip");
 
   if (userIp && userIp.includes(',')) {
