@@ -1,6 +1,7 @@
 import Image from "next/image";
 import SearchBar from "./SearchBar";
 import IPDetailsCard from "./IPDetailsCard";
+import Logo from "./Logo";
 
 export default function Header() {
   return (
@@ -15,9 +16,11 @@ export default function Header() {
         <IPDetailsCard />
       </div>
       <div className="w-full h-full flex flex-col items-center pt-7 gap-6 md:gap-4 w-1300:gap-8">
-        <div className="text-3xl font-semibold tracking-wide">Kompas IP</div>
+        <div className="flex items-center gap-2">
+          <h1><Logo /></h1>
+        </div>
         <SearchBar />
       </div>
-    </div>
+    </div >
   );
 }

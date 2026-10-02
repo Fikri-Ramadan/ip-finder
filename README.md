@@ -2,9 +2,9 @@
 
 > Aplikasi pelacak alamat IP dan domain interaktif yang menyajikan data geolokasi akurat dengan visualisasi peta dinamis.
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-kompas--ip.vercel.app-brightgreen?style=for-the-badge&logo=vercel)](https://your-live-link.vercel.app/)
-[![Vite](https://img.shields.io/badge/Vite-5.0+-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
-[![React](https://img.shields.io/badge/React-18+-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-kompas--ip.vercel.app-brightgreen?style=for-the-badge&logo=vercel)](https://kompas-ip.vercel.app/)
+[![Next.js](https://img.shields.io/badge/Next.js-14+-202022?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Zustand](https://img.shields.io/badge/Zustand-5.0+-4C202D?style=for-the-badge&logo=react&logoColor=white)](https://zustand.docs.pmnd.rs/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0+-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Leaflet](https://img.shields.io/badge/Leaflet-1.9+-199900?style=for-the-badge&logo=leaflet&logoColor=white)](https://leafletjs.com/)
@@ -34,9 +34,9 @@ Tantangan utama dalam aplikasi pemetaan interaktif yang bergantung pada API ekst
 
 ### 🧠 Solusi: Smart Regex Routing & Map Instance Persistence
 
-1. **Regex Pattern Identification**: Aplikasi tidak memerlukan *dropdown* dari pengguna untuk memilih tipe pencarian. Menggunakan algoritma *Regular Expression* (Regex), aplikasi secara otomatis mendeteksi apakah *query* berupa IP Address (`192.168...`) atau Domain (`google.com`), lalu menyuntikkan parameter yang tepat ke `ipAddress=` atau `domain=` pada endpoint IPify.
-2. **Map Instance Mutability**: Daripada menghancurkan (`destroy`) dan membuat ulang elemen peta Leaflet setiap kali kordinat baru diterima, aplikasi menggunakan referensi (misal: React `ref` atau instance global) untuk menjaga peta tetap hidup di memori.
-3. **Smooth Map Transition**: Aplikasi memodifikasi kordinat dan memindahkan letak *Marker* menggunakan metode *update view* bawaan Leaflet (`map.flyTo()`).
+1. **Regex Pattern Identification**: Aplikasi tidak memerlukan *dropdown* dari pengguna untuk memilih tipe pencarian. Menggunakan algoritma *Regular Expression* (Regex), aplikasi secara otomatis mendeteksi apakah *query* berupa IP Address (`192.168...`) atau Domain (`google.com`), apabila domain maka akan dikonversi menjadi IP Address lalu pada endpoint IPWhoIs.
+2. **Map Instance Mutability & Smooth Transitions**: Daripada merender ulang keseluruhan elemen `MapContainer` setiap kali kordinat baru diterima, aplikasi mendelegasikan pembaruan lokasi ke komponen pengontrol khusus (`MapFlyController`). Komponen ini memanfaatkan hook `useMap()` untuk mengakses *instance* peta yang sudah ada di memori secara langsung.
+3. **Smart Viewport Offset**: Saat lokasi berpindah menggunakan `map.flyTo()`, aplikasi mengkalkulasi proyeksi matriks (`map.project` & `map.unproject`) untuk memberikan *offset* vertikal dinamis (110px di *mobile*, 70px di *desktop*). Hal ini memastikan posisi *marker* selalu berada di area yang terlihat nyaman tanpa tertutup oleh antarmuka bilah pencarian yang mengambang di atas peta.
 
 > 💡 **Dampak**: Menghindari *memory leaks* pada browser, menghemat kuota *rate-limit* dari API pihak ketiga, dan menyajikan transisi pergerakan lokasi yang sangat instan dan *smooth* layaknya aplikasi *native*.
 

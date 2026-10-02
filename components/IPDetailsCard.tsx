@@ -7,7 +7,7 @@ import { formatUtcOffset } from "@/lib/utils";
 import { useIpDetails } from "@/stores/IpDetailsStore";
 
 const cardPosition =
-  "absolute top-[calc(100%-6.25rem)] md:top-auto md:-bottom-19 left-1/2 -translate-x-1/2 w-[87%] md:w-[90%] max-w-[1100px]";
+  "absolute top-[calc(100%-6rem)] md:top-auto md:-bottom-19 left-1/2 -translate-x-1/2 w-[87%] md:w-[90%] max-w-[1100px]";
 
 const labelClass = "text-black/40 font-extrabold text-xs tracking-widest";
 const valueClass = "text-black font-bold text-base md:text-[18px] w-1300:text-[21px]";
