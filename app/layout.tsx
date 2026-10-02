@@ -71,7 +71,6 @@ export const viewport: Viewport = {
   themeColor: "#4f5fc4",
 };
 
-// Structured data: tells search engines this is a free web app.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
