@@ -1,122 +1,72 @@
-# Frontend Mentor - IP address tracker
+# 🧭 Kompas Ip (IP Address Tracker)
 
-![Design preview for the IP address tracker coding challenge](preview.jpg)
+> Aplikasi pelacak alamat IP dan domain interaktif yang menyajikan data geolokasi akurat dengan visualisasi peta dinamis.
 
-## Welcome! 👋
-
-Thanks for checking out this front-end coding challenge.
-
-[Frontend Mentor](https://www.frontendmentor.io) challenges help you improve your coding skills by building realistic projects.
-
-**To do this challenge, you need a basic understanding of HTML, CSS and JavaScript.**
-
-## The challenge
-
-Your challenge is to build out this IP Address Tracker app and get it looking as close to the design as possible. To get the IP Address locations, you'll be using the [IP Geolocation API by IPify](https://geo.ipify.org/). To generate the map, we recommend using [LeafletJS](https://leafletjs.com/).
-
-You can use any tools you like to help you complete the challenge. So if you've got something you'd like to practice, feel free to give it a go.
-
-Your users should be able to:
-
-- View the optimal layout for each page depending on their device's screen size
-- See hover states for all interactive elements on the page
-- See their own IP address on the map on the initial page load
-- Search for any IP addresses or domains and see the key information and location
+[![Live Demo](https://img.shields.io/badge/Live_Demo-kompas--ip.vercel.app-brightgreen?style=for-the-badge&logo=vercel)](https://your-live-link.vercel.app/)
+[![Vite](https://img.shields.io/badge/Vite-5.0+-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/React-18+-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![Zustand](https://img.shields.io/badge/Zustand-5.0+-4C202D?style=for-the-badge&logo=react&logoColor=white)](https://zustand.docs.pmnd.rs/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0+-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Leaflet](https://img.shields.io/badge/Leaflet-1.9+-199900?style=for-the-badge&logo=leaflet&logoColor=white)](https://leafletjs.com/)
 
 ---
 
-⚠️ **IMPORTANT** ⚠️: To use the IP Geolocation API by IPify, you'll need to sign up for a free account. You won't need to add any cards details to do this and it's a very quick process. This will generate an API Key for you. Usually, you would be able to restrict your API Key to a specific URL (your own domain). This makes sure that other people can't use your API Key on their own websites. IPify doesn't have this feature, but because you aren't adding your card details, this isn't an issue. **So be sure to only sign up for the free account and DO NOT enter any card details**.
+## 📸 Preview
 
-For the mapping API, we recommend using [LeafletJS](https://leafletjs.com/). It's free to use and doesn't require an API Key. If you decide to use another API, like Google Maps or Mapbox, be sure to secure your API Key. Here are guides for both Google Maps and Mapbox, be sure to read through them thoroughly:
-
-- [API Key best practices from Google Developers](https://developers.google.com/maps/api-key-best-practices)
-- [How to use Mapbox securely](https://docs.mapbox.com/help/troubleshooting/how-to-use-mapbox-securely/)
-
-Exposing your API Key publicly can lead to other people using it to make requests for their own application if the proper precautions aren't in place. Please be sure you read the guides thoroughly and follow their recommendations.
-
-**We don't take any responsibility if you expose your API Key while completing the challenge and have not secured it.**
+![Kompas Ip Desktop Preview](https://raw.githubusercontent.com/Fikri-Ramadan/kompas-ip/main/public/og-image.png)
 
 ---
 
-### Want some support on the challenge? 
+## 🌟 Fitur Utama
 
-[Join our community](https://www.frontendmentor.io/community) and ask questions in the **#help** channel.
+- 🔍 **Smart IP & Domain Search**: Pencarian cerdas yang mendeteksi format alamat IP (IPv4/IPv6) atau nama Domain secara otomatis.
+- 🗺️ **Interactive Dynamic Map**: Visualisasi lokasi pengguna di atas peta interaktif menggunakan LeafletJS dengan kustomisasi *marker* khusus.
+- 📊 **Real-Time Geolocation Data**: Menampilkan rincian Alamat IP, Lokasi detail (Kota, Negara, Kode Pos), Zona Waktu, dan penyedia layanan internet (ISP).
+- 📱 **Mobile-First Responsive Layout**: Antarmuka yang teroptimasi secara sempurna untuk berbagai ukuran layar (Desktop, Tablet, Mobile).
+- 🛡️ **Error Handling & Validation**: Memvalidasi input pengguna secara *real-time* sebelum melakukan pemanggilan API untuk mencegah pemborosan *request* akibat format tidak valid.
+- 🎯 **Auto-Locate on Load**: Mendeteksi dan memetakan alamat IP publik pengguna secara otomatis saat halaman pertama kali dimuat.
 
-## Where to find everything
+---
 
-Your task is to build out the project to the designs inside the `/design` folder. You will find both a mobile and a desktop version of the design.
+## ⚡️ Optimasi & Arsitektur Teknis
 
-The designs are in JPG static format. Using JPGs will mean that you'll need to use your best judgment for styles such as `font-size`, `padding` and `margin`.
+Tantangan utama dalam aplikasi pemetaan interaktif yang bergantung pada API eksternal adalah **mencegah render ulang (re-rendering) peta yang berat** dan **mengefisienkan pengiriman parameter API** berdasarkan jenis input pengguna.
 
-If you would like the Figma design file to inspect the design in more detail, you can [subscribe as a PRO member](https://www.frontendmentor.io/pro).
+### 🧠 Solusi: Smart Regex Routing & Map Instance Persistence
 
-You will find all the required assets in the `/images` folder. The assets are already optimized.
+1. **Regex Pattern Identification**: Aplikasi tidak memerlukan *dropdown* dari pengguna untuk memilih tipe pencarian. Menggunakan algoritma *Regular Expression* (Regex), aplikasi secara otomatis mendeteksi apakah *query* berupa IP Address (`192.168...`) atau Domain (`google.com`), lalu menyuntikkan parameter yang tepat ke `ipAddress=` atau `domain=` pada endpoint IPify.
+2. **Map Instance Mutability**: Daripada menghancurkan (`destroy`) dan membuat ulang elemen peta Leaflet setiap kali kordinat baru diterima, aplikasi menggunakan referensi (misal: React `ref` atau instance global) untuk menjaga peta tetap hidup di memori.
+3. **Smooth Map Transition**: Aplikasi memodifikasi kordinat dan memindahkan letak *Marker* menggunakan metode *update view* bawaan Leaflet (`map.flyTo()`).
 
-There is also a `style-guide.md` file containing the information you'll need, such as color palette and fonts.
+> 💡 **Dampak**: Menghindari *memory leaks* pada browser, menghemat kuota *rate-limit* dari API pihak ketiga, dan menyajikan transisi pergerakan lokasi yang sangat instan dan *smooth* layaknya aplikasi *native*.
 
-## Using AI coding assistants
+---
 
-We've included two files to help you if you're using AI coding assistants (like Claude, GitHub Copilot, Cursor, etc.) while working on this challenge:
+## 🛠️ Tech Stack
 
-- `AGENTS.md` - Contains detailed instructions for AI assistants on how to help you with this challenge. It's tailored to this challenge's difficulty level, so the AI will provide guidance appropriate to your learning stage—offering more support for beginner challenges and encouraging more independence on advanced ones.
-- `CLAUDE.md` - A pointer file that directs Claude-based tools to the AGENTS.md instructions.
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **State Management**: [Zustand](https://zustand.docs.pmnd.rs/) (Client-side state & global store)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Interactive Mapping**: [Leaflet.js](https://leafletjs.com/)
+- **Data Source**: [IP Geolocation API by IPWhoIs](https://ipwhois.io/)
+- **Deployment**: [Vercel](https://vercel.app/)
 
-**How to use them:** You don't need to do anything! These files are automatically detected by most AI coding tools. The AI will read them and adjust its behavior to be a better learning partner—guiding you toward solutions rather than just giving you the answers.
+---
 
-**Note:** These files are designed to help you *learn*, not to do the work for you. The AI is instructed to ask questions, give hints, and explain concepts rather than writing complete solutions.
+## 🚀 Memulai (Local Development)
 
-## Building your project
+Untuk menjalankan proyek ini secara lokal di komputer Anda, ikuti langkah-langkah berikut:
 
-Feel free to use any workflow that you feel comfortable with. Below is a suggested process, but do not feel like you need to follow these steps:
+### Prasyarat
+- Node.js versi 18.x atau lebih baru
+- npm / pnpm / yarn
 
-1. Initialize your project as a public repository on [GitHub](https://github.com/). Creating a repo will make it easier to share your code with the community if you need help. If you're not sure how to do this, [have a read-through of this Try Git resource](https://try.github.io/).
-2. Configure your repository to publish your code to a web address. This will also be useful if you need some help during a challenge as you can share the URL for your project with your repo URL. There are a number of ways to do this, and we provide some recommendations below.
-3. Look through the designs to start planning out how you'll tackle the project. This step is crucial to help you think ahead for CSS classes to create reusable styles.
-4. Before adding any styles, structure your content with HTML. Writing your HTML first can help focus your attention on creating well-structured content.
-5. Write out the base styles for your project, including general content styles, such as `font-family` and `font-size`.
-6. Start adding styles to the top of the page and work down. Only move on to the next section once you're happy you've completed the area you're working on.
+### Langkah-langkah
 
-## Deploying your project
-
-As mentioned above, there are many ways to host your project for free. Our recommended hosts are:
-
-- [GitHub Pages](https://pages.github.com/)
-- [Vercel](https://vercel.com/)
-- [Netlify](https://www.netlify.com/)
-
-You can host your site using one of these solutions or any of our other trusted providers. [Read more about our recommended and trusted hosts](https://www.frontendmentor.io/guides/hosting-your-solution).
-
-## Create a custom `README.md`
-
-We strongly recommend overwriting this `README.md` with a custom one. We've provided a template inside the [`README-template.md`](./README-template.md) file in this starter code.
-
-The template provides a guide for what to add. A custom `README` will help you explain your project and reflect on your learnings. Please feel free to edit our template as much as you like.
-
-Once you've added your information to the template, delete this file and rename the `README-template.md` file to `README.md`. That will make it show up as your repository's README file.
-
-## Submitting your solution
-
-Submit your solution on the platform for the rest of the community to see. Follow our ["Complete guide to submitting solutions"](https://www.frontendmentor.io/guides/how-to-submit-solutions) for tips on how to do this.
-
-Remember, if you're looking for feedback on your solution, be sure to ask questions when submitting it. The more specific and detailed you are with your questions, the higher the chance you'll get valuable feedback from the community.
-
-## Sharing your solution
-
-There are multiple places you can share your solution:
-
-1. Share your solution page in the **#finished-projects** channel of the [community](https://www.frontendmentor.io/community).
-2. Share on [X (formerly Twitter)](https://x.com/frontendmentor) and mention **@frontendmentor**, including the repo and live URLs in your post. We'd love to take a look at what you've built and help share it around.
-3. Share your solution on [LinkedIn](https://www.linkedin.com/company/frontend-mentor/).
-4. Blog about your experience building your project. Writing about your workflow, technical choices, and talking through your code is a brilliant way to reinforce what you've learned. Great platforms to write on are [dev.to](https://dev.to/), [Hashnode](https://hashnode.com/), and [CodeNewbie](https://community.codenewbie.org/).
-
-We provide templates to help you share your solution once you've submitted it on the platform. Please do edit them and include specific questions when you're looking for feedback.
-
-The more specific you are with your questions, the more likely it is that another member of the community will give you feedback.
-
-## Got feedback for us?
-
-We love receiving feedback! We're always looking to improve our challenges and our platform. So if you have anything you'd like to mention, please email hi[at]frontendmentor[dot]io.
-
-This challenge is completely free. Please share it with anyone who will find it useful for practice.
-
-**Have fun building!** 🚀
+1. **Clone repository ini:**
+   ```bash
+   git clone https://github.com/Fikri-Ramadan/ip-finder.git
+   cd ip-finder
+   npm install
+   npm run dev

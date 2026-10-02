@@ -1,36 +1,60 @@
 'use client';
 
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 
 import L from "leaflet";
+import { useEffect, useRef } from "react";
 import { useIpDetails } from "@/stores/IpDetailsStore";
 import useIpData from "@/hooks/useIpData";
-import { useEffect } from "react";
 
 const customIcon = typeof window !== "undefined" ? new L.Icon({
   iconUrl: "/images/icon-location.svg",
   iconSize: [35, 45],
-  iconAnchor: [15, 50],
+  iconAnchor: [17, 50],
   popupAnchor: [0, -50],
 }) : null;
 
 const MOBILE_BREAKPOINT = 768;
+const TARGET_ZOOM = 12;
 
-function MapOffsetController({ markerPosition }: { markerPosition: [number, number]; }) {
+function MapFlyController({
+  lat,
+  lng,
+  markerRef,
+}: {
+  lat: number;
+  lng: number;
+  markerRef: React.RefObject<L.Marker | null>;
+}) {
   const map = useMap();
+  const isFirstLoad = useRef(true);
 
   useEffect(() => {
-    if (!markerPosition) return;
-
     const isMobile = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`).matches;
-    const offsetY = isMobile ? -130 : -50;
+    const offsetY = isMobile ? 110 : 70;
 
-    map.setView(markerPosition, map.getZoom(), { animate: false });
-    map.panBy([0, offsetY], { animate: false });
-  }, [markerPosition, map]);
+    const projected = map.project([lat, lng], TARGET_ZOOM).subtract([0, offsetY]);
+    const target = map.unproject(projected, TARGET_ZOOM);
+
+    const openPopup = () => markerRef.current?.openPopup();
+
+    if (isFirstLoad.current) {
+      map.setView(target, TARGET_ZOOM, { animate: false });
+      isFirstLoad.current = false;
+      openPopup();
+    } else {
+      map.closePopup();
+      map.once("moveend", openPopup);
+      map.flyTo(target, TARGET_ZOOM, { duration: 1.5 });
+    }
+
+    return () => {
+      map.off("moveend", openPopup);
+    };
+  }, [lat, lng, map, markerRef]);
 
   return null;
 }
@@ -38,33 +62,47 @@ function MapOffsetController({ markerPosition }: { markerPosition: [number, numb
 export default function Map() {
   const details = useIpDetails(state => state.details);
   const { isValidating } = useIpData();
-  const position: [number, number] = [details?.latitude ?? 0, details?.longitude ?? 0];
+  const markerRef = useRef<L.Marker | null>(null);
 
-  if (isValidating) {
+  const lat = details?.latitude;
+  const lng = details?.longitude;
+
+  if (lat == null || lng == null) {
     return <div className="flex-1 z-0 w-full h-[500px] bg-gray-950/30 animate-pulse" />;
   }
 
-  return <>
-    <MapContainer
-      center={position}
-      zoom={12}
-      scrollWheelZoom={true}
-      style={{ height: '100%', width: '100%' }}
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      {customIcon && (
-        <>
-          <Marker position={[details?.latitude ?? 0, details?.longitude ?? 0]} icon={customIcon}>
-            <Popup>
-              Halo! Koordinat terdeteksi di {details?.city}. <br /> Peta berhasil dimuat.
-            </Popup>
-          </Marker>
-          <MapOffsetController markerPosition={position} />
-        </>
+  return (
+    <div className="relative h-full w-full">
+      <MapContainer
+        center={[lat, lng]}
+        zoom={TARGET_ZOOM}
+        zoomControl={false}
+        scrollWheelZoom={true}
+        className="z-0"
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | IP data by <a href="https://ipwhois.io" target="_blank" rel="noopener noreferrer">IPWhoIs</a>'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {customIcon && (
+          <>
+            <Marker position={[lat, lng]} icon={customIcon} ref={markerRef}>
+              <Popup>
+                <strong>{details?.ip}</strong>
+                <br />
+                {details?.city}, {details?.region}
+              </Popup>
+            </Marker>
+            <MapFlyController lat={lat} lng={lng} markerRef={markerRef} />
+            <ZoomControl position="bottomright" />
+          </>
+        )}
+      </MapContainer>
+
+      {isValidating && (
+        <div className="absolute inset-0 z-[500] bg-gray-950/30 animate-pulse pointer-events-none" />
       )}
-    </MapContainer>
-  </>;
+    </div>
+  );
 }

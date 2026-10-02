@@ -4,13 +4,13 @@ import IPDetailsCard from "./IPDetailsCard";
 
 export default function Header() {
   return (
-    <div className="relative z-1 h-70 md:h-60 w-1300:h-70">
-      <div className="absolute top-0 left-0 w-full h-70 md:h-60 w-1300:h-70 -z-10">
+    <div className="relative z-1 h-65 md:h-60 w-1300:h-70">
+      <div className="absolute top-0 left-0 w-full h-65 md:h-60 w-1300:h-70">
         <Image
           src={'/images/pattern-bg-desktop.png'}
           alt="bg image"
           fill
-          className="object-cover"
+          className="object-cover -z-10"
         />
         <IPDetailsCard />
       </div>

@@ -16,7 +16,7 @@ export default function SearchBar() {
   };
 
   return (
-    <form className="flex w-full max-w-150 px-6 shadow-sm" onSubmit={handleSubmit}>
+    <form className="z-10 flex w-full max-w-150 px-6 shadow-sm" onSubmit={handleSubmit}>
       <input
         type="text"
         value={search}
