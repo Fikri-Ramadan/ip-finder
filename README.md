@@ -13,7 +13,7 @@
 
 ## 📸 Preview
 
-![Kompas Ip Desktop Preview](https://raw.githubusercontent.com/Fikri-Ramadan/kompas-ip/main/public/og-image.png)
+![Kompas Ip Desktop Preview](https://raw.githubusercontent.com/Fikri-Ramadan/ip-finder/main/public/og-image.png)
 
 ---
 
